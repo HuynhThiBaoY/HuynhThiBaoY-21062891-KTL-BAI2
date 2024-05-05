@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gallery</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="anh_move.css">
+</head>
+<body>
+<div class="slider">
+    <div class="slide-track">
+      <div class="slide">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRA5UCDOaSCEr-4vq-kSQm2mwu5N8U7kkTMxBwil4bDLg&s" height="400" width="250" alt="" />
+      </div>
+      <div class="slide">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRA5UCDOaSCEr-4vq-kSQm2mwu5N8U7kkTMxBwil4bDLg&s" height="400" width="250" alt="" />
+      </div>
+      <div class="slide">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRA5UCDOaSCEr-4vq-kSQm2mwu5N8U7kkTMxBwil4bDLg&s" height="400" width="250" alt="" />
+      </div>
+      <div class="slide">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRA5UCDOaSCEr-4vq-kSQm2mwu5N8U7kkTMxBwil4bDLg&s" height="400" width="250" alt="" />
+      </div>
+      <div class="slide">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRA5UCDOaSCEr-4vq-kSQm2mwu5N8U7kkTMxBwil4bDLg&s" height="400" width="250" alt="" />
+      </div>
+    </div>
+  </div>
+  <style>
+
+.slider {
+  height: 100px; /* Đảm bảo chiều cao mong muốn */
+  margin-top: 300px; /* Đẩy phần trên xuống dưới */
+  margin-bottom: auto; /* Đẩy phần dưới lên trên */
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  display: grid; /* Sử dụng grid để căn giữa */
+  align-items: center; /* Căn giữa theo chiều dọc */
+}
+
+.slide-track {
+  display: flex;
+  width: calc(250px * 18);
+  animation: scroll 40s linear infinite;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-250px * 9));
+  }
+}
+
+.slide {
+  height: 200px;
+  width: 250px;
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  perspective: 100px;
+  transition: transform 0.5s ease-in-out, filter 0.5s ease;
+}
+  </style>
+
+<script>
+const slider = document.querySelector('.slider');
+const slideTrack = document.querySelector('.slide-track');
+const slides = Array.from(slideTrack.querySelectorAll('.slide'));
+
+let isAnimating = false;
+let currentSlide = 0;
+const centerX = window.innerWidth / 2;
+const centerY = window.innerHeight / 2;
+
+function resetAnimation() {
+  slides.forEach((slide, index) => {
+    if (index === currentSlide) {
+      slide.style.transform = `translateX(-50%) translateY(-50%) scale(1.5)`;
+      slide.style.filter = 'none';
+      slide.style.zIndex = '1';
+    } else {
+      slide.style.transform = `translateX(${(index - currentSlide) * 100}%)`;
+      slide.style.filter = 'blur(5px)';
+      slide.style.zIndex = '0';
+    }
+  });
+}
+
+function animateSlide() {
+  if (isAnimating) return;
+  isAnimating = true;
+
+  const currentSlideElement = slides[currentSlide];
+  currentSlideElement.style.transform = `translateX(calc(50% - 125px)) translateY(calc(50% - 100px)) scale(1.5)`; // Thay đổi giá trị transform
+
+  slides.forEach((slide, index) => {
+    if (index !== currentSlide) {
+      slide.style.transform = `translateX(${index > currentSlide ? 100 : -100}%)`;
+      slide.style.filter = 'blur(5px)';
+    }
+  });
+
+  setTimeout(() => {
+    currentSlide = (currentSlide + 1) % slides.length;
+    resetAnimation();
+    isAnimating = false;
+  }, 3000);
+}
+
+resetAnimation();
+setInterval(animateSlide, 5000);
+
+
+</script>
+</body>
+</html>
